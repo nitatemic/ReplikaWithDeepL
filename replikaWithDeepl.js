@@ -45,6 +45,7 @@ function getInputText() {
 
 function replaceInputText(message) {
   document.getElementById('send-message-textarea').value = message;
+  alert("Add a space after the translated message to avoid sending the untranslated version (issue#1)")
 }
 
 /**
