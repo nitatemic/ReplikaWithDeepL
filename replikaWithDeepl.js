@@ -5,6 +5,7 @@
 // @description  Translate your conversations with your replika thanks to the Deepl API
 // @author       Nitatemic
 // @match        https://my.replika.ai/*
+// @match        https://my.replika.com/*
 // @grant        none
 // ==/UserScript==
 
@@ -18,10 +19,13 @@ const VIEW_ENGLISH_VERSION = true; /**
                                        *  If false, the message will be replaced by its translated version
                                        * */
 
+
 /* Function that gets the last message. (Your messages included) */
-function getMessage() {
-  const messagesArray = document.querySelectorAll('[id^="message"][id$="text"]'); /* Select all elements with id starting with "message" and ending with "text" (message containers) */
-  return messagesArray[messagesArray.length - 1].innerText; /* Return the last message */
+async function getMessage() {
+  const messagesArray = await document.querySelectorAll('[id^="message"][id$="text"]'); /* Select all elements with id starting with "message" and ending with "text" (message containers) */
+  console.log("ici")
+  console.log(messagesArray[messagesArray.length - 1].innerText);
+  return messagesArray[messagesArray.length - 1].innerText;
 }
 
 /**
@@ -62,15 +66,15 @@ async function getTranslation(message, source, target) {
       },
       body: urlParams,
     });
-  await response = response.json();
-  return response.translations[0].text;
+  let res = await response.json();
+  return res.translations[0].text;
 }
 
 /**
  * Adds a button next to the input. So that you can translate your messages before sending them.
  * */
 function addButtonOnInput() {
-  const buttonsContainer = document.getElementById('send-message-textarea').parentNode.parentNode.parentNode; /* Get the location of the button container */
+  const buttonsContainer = document.getElementById('send-message-textarea').parentNode.parentNode; /* Get the location of the button container */
   /* Create the translation button for your text */
   const inputTranslateButton = document.createElement('button'); /* Create the button */
   inputTranslateButton.innerText = 'Translate'; /* Set the text of the button */
@@ -79,11 +83,11 @@ function addButtonOnInput() {
   inputTranslateButton.addEventListener('click', () => {
     const message = getInputText(); /* Get the last message */
     getTranslation(message, TARGET_LANG, SOURCE_LANG)
-      .then((translation) => {
-        replaceInputText(translation); /* Replace the message by the translated version */
-      }, (error) => {
-        console.log(error);
-      });
+    .then((translation) => {
+      replaceInputText(translation); /* Replace the message by the translated version */
+    }, (error) => {
+      console.log(error);
+    });
   });
 }
 
@@ -94,22 +98,35 @@ function addButtonOnInput() {
  * */
 function replaceReplikaMessage(message) {
   const messagesArray = document.querySelectorAll('[id^="message"][id$="text"]'); /* Select all elements with id starting with "message" and ending with "text" (message containers) */
+  let lastMessage = messagesArray[messagesArray.length - 1].innerText;
   if (!VIEW_ENGLISH_VERSION) {
     messagesArray[messagesArray.length - 1].innerText = message; /* Replace the last message by the translated version */
   } else {
-    messagesArray[messagesArray.length - 1].innerText = `${messagesArray[messagesArray.length - 1]} \n ---- \n ${message} `; /* Remove the last message */
+    let newMessage = `${lastMessage} \n ---- \n ${message}`;
+    messagesArray[messagesArray.length - 1].innerText = newMessage;
+    console.log(newMessage);
   }
 }
 /**
  * Adds a button to translate messages from your replika
  * */
 function addButtonOnReplikaMessage() {
-  const buttonsContainer = document.querySelector('[id^="message"][id$="text"]').parentNode.parentNode; /* Get the location of the button container */
+  const buttonsContainer = document.getElementById('send-message-textarea').parentNode.parentNode; /* Get the location of the button container */
   /* Create the translation button for your text */
   const replikaTranslateButton = document.createElement('button'); /* Create the button */
-  replikaTranslateButton.innerText = 'Translate'; /* Set the text of the button */
+  replikaTranslateButton.innerText = 'Translate last message'; /* Set the text of the button */
   replikaTranslateButton.className = 'SolidButton-k70ct8-0 LeftPanelMain__ChooseConversationButton-sc-1tyut5s-0 knPAmu bPYGdj'; /* Add a class to make the button pretty */
   buttonsContainer.prepend(replikaTranslateButton); /* Add the button to the container */
+  replikaTranslateButton.addEventListener('click', async () => {
+    const message = await getMessage(); /* Get the last message */
+    getTranslation(message, SOURCE_LANG, TARGET_LANG)
+    .then((translation) => {
+      console.log("la trad" + translation);
+      replaceReplikaMessage(translation);/* Replace the message by the translated version */
+    }, (error) => {
+      console.log(error);
+    });
+  });
 }
 
 setTimeout(() => {
