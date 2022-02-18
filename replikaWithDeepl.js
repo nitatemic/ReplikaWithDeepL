@@ -6,7 +6,6 @@
 // @author       Nitatemic
 // @match        https://my.replika.ai/*
 // @match        https://my.replika.com/*
-// @downloadURL  https://raw.githubusercontent.com/Nitatemic/replikaWithDeepl/master/replikaWithDeepl.js
 // @grant        none
 // ==/UserScript==
 
