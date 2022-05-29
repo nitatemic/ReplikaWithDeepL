@@ -19,3 +19,5 @@ The script has a variable that allows to change its behavior. You can either rep
 ### API key
 To work, the script needs an API key from DeepL. DeepL offers a free plan that translates 500,000 characters per month.
 
+### TODO
+Convert to a browser extension
