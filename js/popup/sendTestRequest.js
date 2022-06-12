@@ -10,7 +10,8 @@ function sendTestRequest(APIKEY) {
 		endpoint = "https://api.deepl.com/v2";
 	}
 
-	/* Faire une requête à DeepL pour vérifier que l'API_KEY est correcte */
+
+	/* Trying to fetch the endpoint and return the response. If it fails, it returns 'Fetch error'. */
 	try {
 		fetch(`${endpoint}usage?auth_key=${APIKEY}`)
 		.then(response => {
