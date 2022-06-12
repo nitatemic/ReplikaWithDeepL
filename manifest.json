@@ -1,0 +1,10 @@
+{
+  "name": "Replika with DeepL",
+  "description": "Talk with your Replika in your native language",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage"]
+}
