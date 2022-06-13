@@ -1,0 +1,21 @@
+{
+  "name": "ReplikaWithDeepL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nitatemic/ReplikaWithDeepL.git",
+  "author": "nitatemic <alexandre@nitatemic.dev>",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
