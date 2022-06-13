@@ -22,3 +22,5 @@ jobs:
         cache: 'yarn'
     - run: yarn install --frozen-lockfile # optional, --immutable
     - run: yarn test
+      env:
+        API_KEY_TEST: ${{ secrets.API_KEY_TEST }}
